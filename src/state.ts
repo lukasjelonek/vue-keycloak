@@ -35,10 +35,10 @@ export const setToken = (token: string): void => {
   state.token = token
   const content = jwtDecode<TokenContent>(state.token)
   state.decodedToken = content
-  state.roles = content.realm_access.roles
+  state.roles = content.realm_access ? content.realm_access.roles : []
   state.username = content.preferred_username
   state.resourceRoles = content.resource_access ? Object.fromEntries(
-    Object.entries(content.resource_access).map(([key, value]) => [key, value.roles]),
+    Object.entries(content.resource_access).map(([key, value]) => [key, (value as any).roles]),
   ) : {};
 }
 
