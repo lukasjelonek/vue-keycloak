@@ -34,6 +34,7 @@ describe('useKeycloak', () => {
 
       expect(hasResourceRoles(['my-role', 'my-other-role'], 'myApp')).toBe(true)
       expect(hasResourceRoles(['my-role', 'not-my-role'], 'myApp')).toBe(false)
+      expect(hasResourceRoles(['my-role'], 'missingApp')).toBe(false)
       expect(hasResourceRoles(['my-role', 'my-other-role'], undefined)).toBe(false)
       expect(hasResourceRoles(['my-role', 'my-other-role'], null)).toBe(false)
       expect(hasResourceRoles(undefined, undefined)).toBe(false)

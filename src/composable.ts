@@ -23,10 +23,12 @@ export const useKeycloak = (): KeycloakComposable => {
     keycloak: getKeycloak(),
     hasRoles: (roles: string[]) =>
       !isNil(roles) && state.isAuthenticated && roles.every(role => state.roles.includes(role)),
-    hasResourceRoles: (roles: string[], resource: string) =>
-      !isNil(roles) &&
-      !isNil(resource) &&
-      state.isAuthenticated &&
-      roles.every(role => state.resourceRoles[resource].includes(role)),
+    hasResourceRoles: (roles: string[], resource: string) => {
+      if (isNil(roles) || isNil(resource) || !state.isAuthenticated) {
+        return false
+      }
+      const resourceRoles = state.resourceRoles[resource]
+      return roles.every(role => Array.isArray(resourceRoles) && resourceRoles.includes(role))
+    },
   }
 }
